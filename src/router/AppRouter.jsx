@@ -23,7 +23,7 @@ const ProtectedRoute = ({ children }) => {
 
   if (loading)
     return (
-      <div style={{ textAlign: "center", marginTop: "20vh" }}>
+      <div style={{ textAlign: "center", marginTop: "40vh" }}>
         <div className="spinner" />
         Checking authentication...
       </div>
@@ -81,7 +81,6 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         />
-
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
