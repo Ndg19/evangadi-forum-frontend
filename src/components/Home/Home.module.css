@@ -1,14 +1,21 @@
+/* ==============================
+   Main wrapper for the home page
+============================== */
 .homeWrapper {
-  max-width: 900px;
   margin: 0 auto;
   padding: 20px;
+  width: 75% !important;
 }
 
+/* ==============================
+   Top row (Ask Question + Welcome)
+============================== */
 .topRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 .askButton {
@@ -31,6 +38,9 @@
   margin-top: 60px;
 }
 
+/* ==============================
+   Search bar
+============================== */
 .searchBar input {
   width: 100%;
   padding: 10px 15px;
@@ -39,46 +49,133 @@
   margin-bottom: 20px;
 }
 
+/* ==============================
+   Questions section
+============================== */
 .usersSection {
   margin-bottom: 30px;
 }
 
-.userRow {
+/* Question row */
+.questionRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 12px 15px;
-  margin-bottom: 10px;
   background-color: #fff;
+  gap: 10px;
+  flex-wrap: wrap; /* allow wrapping if necessary */
 }
 
-.userInfo {
+/* Question content */
+.questionContent {
+  flex: 1;
+  min-width: 0; /* prevents overflow */
+}
+
+/* Edit button */
+.editButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.editButton:hover {
+  background-color: #218838;
+}
+
+/* Edit + pagination container */
+.questionControls {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  flex-wrap: nowrap;
+  overflow-x: auto; /* allow horizontal scroll if content overflows */
+  padding-bottom: 4px;
 }
 
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+/* ==============================
+   Pagination controls
+============================== */
+.pagination {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+  justify-content: center;
 }
 
-.username {
-  font-weight: bold;
-}
-
-.questionPreview {
-  margin-left: 10px;
-  color: #555;
-}
-
-.detailButton {
-  background-color: transparent;
-  border: none;
-  font-weight: bold;
+.pageButton,
+.pageNavButton {
+  border: 1px solid #007bff;
+  background-color: white;
+  color: #007bff;
+  padding: 6px 12px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 1.2rem;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  
+}
+
+.pageButton:hover,
+.pageNavButton:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.pageNavButton[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.activePage {
+  background-color: #007bff;
+  color: white;
+}
+
+/* ==============================
+   Responsive for mobile
+============================== */
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .homeWrapper {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .topRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .questionRow {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .questionContent {
+    margin-right: 10px;
+  }
+
+  .editButton {
+    padding: 6px 10px;
+  }
+
+  .paginationWrapper {
+    flex-direction: row;
+    justify-content: center;
+    overflow-x: auto;
+  }
+  .left_1ydgp_115{
+    gap: 0;
+  }
 }

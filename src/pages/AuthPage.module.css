@@ -37,7 +37,7 @@
   position: relative;
   z-index: 1;
   display: flex;
-  background: white;
+  background: #ffff;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
@@ -93,5 +93,10 @@
   .aboutSide {
     border-left: none;
     border-top: 2px solid rgba(0, 0, 0, 0.05);
+  }
+}
+@media (max-width: 480px) {
+  .formSide{
+    padding: 0;
   }
 }

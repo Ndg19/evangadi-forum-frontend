@@ -1,21 +1,57 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Home.module.css";
+import Question from "../Question/Question";
 
-const Home = ({ currentUser, questions, error }) => {
+const Home = ({ currentUser, questions = [] }) => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   // Filter questions
-  const filteredQuestions = questions.filter(
-    (q) =>
-      q.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      q.content.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredQuestions = useMemo(() => {
+    const q = (questions || []).filter(Boolean);
+    const term = (searchTerm || "").trim().toLowerCase();
+    if (!term) return q;
+
+    return q.filter((item) => {
+      const title = String(item?.title || "").toLowerCase();
+      const description = String(
+        item?.description || item?.content || ""
+      ).toLowerCase();
+      const author = String(
+        item?.username ||
+          item?.user?.username ||
+          item?.user_name ||
+          item?.user?.first_name ||
+          ""
+      ).toLowerCase();
+
+      return (
+        title.includes(term) ||
+        description.includes(term) ||
+        author.includes(term)
+      );
+    });
+  }, [questions, searchTerm]);
+
+  // Pagination setup
+  const totalPages = Math.ceil(filteredQuestions.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedQuestions = filteredQuestions.slice(
+    startIndex,
+    startIndex + itemsPerPage
   );
+
+  const handlePageChange = (page) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+  };
 
   return (
     <div className={styles.homeWrapper}>
-      {/* Top bar */}
+      {/* Top row */}
       <div className={styles.topRow}>
         <button
           className={styles.askButton}
@@ -26,7 +62,7 @@ const Home = ({ currentUser, questions, error }) => {
           Ask Question
         </button>
         <div className={styles.welcomeText}>
-          Welcome, {currentUser?.first_name || currentUser?.username || "Guest"}
+          <h3>Welcome : {currentUser?.username || "Guest"}</h3>
         </div>
       </div>
 
@@ -34,46 +70,70 @@ const Home = ({ currentUser, questions, error }) => {
       <div className={styles.searchBar}>
         <input
           type="text"
-          placeholder="Search questions..."
+          placeholder="Search questions by title, description or author..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
-
-      {/* Error */}
-      {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
-
-      {/* Questions list */}
-      <section className={styles.usersSection}>
-        {filteredQuestions.length > 0 ? (
-          filteredQuestions.map((q) => (
-            <div
-            
-              key={q.question_id}
-              className={styles.userRow}
-              onClick={() => navigate(`/question/${q.question_id}`)}
-            >
-              <div className={styles.userInfo}>
-                <img
-                  src={q.user?.avatar || "/default-avatar.png"}
-                  alt={q.user?.first_name || q.user_name || "Anonymous"}
-                  className={styles.avatar}
-                />
-                <span className={styles.username}>
-                  {q.user?.first_name || q.user_name || "Anonymous"}
-                </span>
-                <span className={styles.questionPreview}>
-                  {q.title.length > 50 ? q.title.slice(0, 50) + "..." : q.title}
-                </span>
-              </div>
-              
-              <button className={styles.detailButton}>&gt;</button>
+      {/* Question list */}
+      {paginatedQuestions.length > 0 ? (
+        paginatedQuestions.map((q) => (
+          <div key={q.question_id || q.id} className={styles.questionRow}>
+            <div className={styles.questionContent}>
+              <Question question={q} />
             </div>
-          ))
-        ) : (
-          <p style={{ textAlign: "center" }}>No questions found.</p>
-        )}
-      </section>
+
+            {/* Controls: Edit button + Pagination */}
+            <div className={styles.questionControls}>
+            {
+                <button
+                  className={styles.editButton}
+                  onClick={() =>
+                    navigate(`/question/edit/${q.question_id || q.id}`)
+                  }
+                >
+                  Edit
+                </button>
+              }
+            </div>
+          </div>
+        ))
+      ) : (
+        <p>No questions found.</p>
+      )}
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className={`${styles.questionControls} ${styles.pagination}`}>
+          <button
+            className={styles.pageNavButton}
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Prev
+          </button>
+
+          {[...Array(totalPages)].map((_, index) => (
+            <button
+              key={index}
+              className={`${styles.pageButton} ${
+                currentPage === index + 1 ? styles.activePage : ""
+              }`}
+              onClick={() => handlePageChange(index + 1)}
+            >
+              {index + 1}
+            </button>
+          ))}
+
+          <button
+            className={styles.pageNavButton}
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };

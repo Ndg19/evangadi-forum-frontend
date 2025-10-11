@@ -1,7 +1,8 @@
 import { useState, useEffect, useContext } from "react";
-import styles from "./QuestionPage.module.css";
+import styles from "./questionpage.module.css";
 import api from "../services/api";
 import { AuthContext } from "../context/AuthContext";
+import { FaArrowCircleRight } from "react-icons/fa";
 
 const QuestionPage = () => {
   const { token } = useContext(AuthContext);
@@ -13,9 +14,8 @@ const QuestionPage = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [message, setMessage] = useState(""); //  feedback message
+  const [message, setMessage] = useState("");
 
-  // Fetch questions
   const fetchQuestions = async () => {
     try {
       setLoading(true);
@@ -38,10 +38,9 @@ const QuestionPage = () => {
     stateUpdater((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Post a new question with message feedback
   const handlePostQuestion = async () => {
     if (!newQuestion.title.trim() || !newQuestion.description.trim()) {
-      setMessage("⚠️ Please enter both title and description.");
+      setMessage("Please enter both title and description.");
       return;
     }
 
@@ -51,14 +50,12 @@ const QuestionPage = () => {
       const res = await api.post("/question", newQuestion);
       setQuestions((prev) => [res.data, ...prev]);
       setNewQuestion({ title: "", description: "" });
-      setMessage(" Question posted successfully!");
+      setMessage("Question posted successfully!");
     } catch (err) {
       console.error(err);
       setMessage(err.response?.data?.message || "❌ Failed to post question.");
     } finally {
       setLoading(false);
-
-      //  Clear message after 3 seconds
       setTimeout(() => setMessage(""), 3000);
     }
   };
@@ -74,19 +71,33 @@ const QuestionPage = () => {
   });
 
   return (
-    <div className={styles.questionPageWrapper}>
-      <div className={styles.stepsSection}>
-        <h2>Steps to Write a Good Question</h2>
+    <div className={styles.container}>
+      {/* Steps Section */}
+      <div className={styles.steps}>
+        <h2>Steps To Write A Good Question.</h2>
         <ul>
-          <li>➤ Be clear and concise</li>
-          <li>➤ Provide context and examples</li>
-          <li>➤ Check for duplicates</li>
-          <li>➤ Use proper tags</li>
+          <li>
+            <FaArrowCircleRight className={styles.icon} />
+            Summarize your problems in a one-line-title.
+          </li>
+          <li>
+            <FaArrowCircleRight className={styles.icon} />
+            Describe your problem in more detail.
+          </li>
+          <li>
+            <FaArrowCircleRight className={styles.icon} />
+            Describe what you tried and what you expected to happen.
+          </li>
+          <li>
+            <FaArrowCircleRight className={styles.icon} />
+            Review your question and post it here.
+          </li>
         </ul>
       </div>
 
-      <div className={styles.postSection}>
-        <h2>Post Your Question</h2>
+      {/* Form Section */}
+      <div className={styles.form_box}>
+        <h3>Post Your Question</h3>
 
         <input
           type="text"
@@ -94,34 +105,26 @@ const QuestionPage = () => {
           placeholder="Question title"
           value={newQuestion.title}
           onChange={(e) => handleChange(e, setNewQuestion)}
-          className={styles.titleSearch}
+          className={styles.input}
         />
         <textarea
           name="description"
           placeholder="Describe your question..."
           value={newQuestion.description}
           onChange={(e) => handleChange(e, setNewQuestion)}
-          className={styles.descriptionSearch}
+          className={styles.textarea}
         />
 
-        {/*  Show message */}
         {message && <p className={styles.message}>{message}</p>}
 
         <button
           onClick={handlePostQuestion}
-          className={styles.postButton}
+          className={styles.button}
           disabled={loading}
         >
           {loading ? "Posting..." : "Post Question"}
         </button>
       </div>
-
-      {/* Questions List */}
-      {/* {error && <p className={styles.error}>{error}</p>}
-      {filteredQuestions.map((q) => (
-        <Question key={q.question_id} question={q} />
-      ))}
-      {filteredQuestions.length === 0 && <p>No questions found.</p>} */}
     </div>
   );
 };

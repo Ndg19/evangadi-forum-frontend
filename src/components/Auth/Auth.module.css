@@ -1,28 +1,42 @@
-/* Page wrapper — scrollable + centered */
 .signupPage {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #ffffff;
+  background-color: #f7f8fc;
   min-height: 100vh;
-  padding: 50px 0; /* allows scroll space */
-  overflow-y: auto; /* scrollable when needed */
+  padding: 20px;
   box-sizing: border-box;
 }
 
-/* 🔹 Signup box */
 .signupContainer {
+  position: relative;
   background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
-  padding: 25px 20px;
+  padding: 40px 30px;
   text-align: center;
-  margin: 40px 0; /* adds top/bottom spacing for scroll */
+  overflow: hidden;
 }
 
-/* Titles */
+.signupContainer::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  left: -40px;
+  width: 150px;
+  height: 150px;
+  background: rgba(0, 123, 255, 0.4);
+  filter: blur(80px);
+  z-index: 0;
+}
+
+.signupContainer * {
+  position: relative;
+  z-index: 1;
+}
+
 .mainTitle {
   font-size: 1.6rem;
   margin-bottom: 10px;
@@ -31,28 +45,22 @@
 
 .subTitle {
   font-size: 0.95rem;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   color: #444;
 }
 
-/* Form */
 .signupForm {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-}
-
-.nameRow {
-  display: flex;
-  gap: 8px;
+  gap: 12px;
 }
 
 .signupForm input {
   width: 100%;
-  padding: 8px 10px;
+  padding: 10px 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   outline: none;
 }
 
@@ -60,15 +68,50 @@
   border-color: #007bff;
 }
 
-/* Buttons */
-.yellowButtonSmall,
-.blueButtonSmall {
-  padding: 6px 10px;
+.passwordWrapper {
+  position: relative;
+}
+
+.eyeIcon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #555;
+}
+
+.forgotPassword {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.linkButton {
+  background: none;
   border: none;
-  border-radius: 6px;
+  color: #ffb700;
   cursor: pointer;
   font-size: 0.9rem;
-  transition: 0.3s;
+  transition: color 0.2s;
+}
+.nameRow{
+  display: flex;
+  gap: 20px;
+ 
+}
+.linkButton:hover {
+  color: #0056b3;
+}
+
+.yellowButtonSmall,
+.blueButtonSmall {
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .yellowButtonSmall {
@@ -76,7 +119,7 @@
 }
 
 .yellowButtonSmall:hover {
-  background-color: #0056b3;
+  background-color: #f0f0f0;
 }
 
 .blueButtonSmall {
@@ -88,108 +131,47 @@
   background-color: #0056b3;
 }
 
-/* Terms text */
-.termsSection h3 {
-  font-size: 0.9rem;
-  margin: 12px 0;
-  color: #333;
-}
-
-.bottomText {
-  font-size: 0.9rem;
-  margin-top: 10px;
-  color: #333;
-}
-
 .error {
   color: red;
   font-size: 0.9rem;
-  margin: 4px 0;
+  margin: 2px 0;
 }
 
 /* Responsive */
 @media (max-width: 480px) {
   .signupContainer {
-    padding: 20px 15px;
-    margin: 20px 0;
+    padding: 10px 10px;
   }
 
   .mainTitle {
     font-size: 1.4rem;
   }
-}
-.signupContainer {
-  position: relative; /* important for pseudo-element positioning */
-  background-color: #ffffff;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 500px;
-  padding: 40px 30px;
-  text-align: center;
-  overflow: hidden; /* ensures blur doesn’t overflow the edges */
-}
 
-/* Add this blurred blue corner effect */
-.signupContainer::before {
-  content: "";
-  position: absolute;
-  top: -40px;
-  left: -40px;
-  width: 150px;
-  height: 150px;
-  background: rgba(0, 123, 255, 0.4); /* light blue tint */
-  filter: blur(80px); /* strong blur */
-  z-index: 0;
-}
+  .signupForm input {
+    font-size: 0.9rem;
+  }
 
-/* make sure the form and content stay above the blur */
-.signupContainer * {
-  position: relative;
-  z-index: 1;
+  .blueButtonSmall,
+  .yellowButtonSmall {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+  .signupPage {
+  min-height: 25vh;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-top: 60px;
 }
-
-
-         /* login style */
-.signupContainer::before {
-  content: "";
-  justify-content: center;
-  position: absolute;
-  top: -40px;
-  left: -40px;
-  width: 150px;
-  height: 150px;
-  background: rgba(0, 123, 255, 0.4);
-  filter: blur(80px);
-  z-index: 0;
+.signupContainer{
+  margin-top: 450px;
+  font-size: 10;
 }
+.signupContainer h1{
+  font-size:medium;
 
-.forgotPassword {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: -5px;
-  margin-bottom: 15px;
 }
+.signupContainer h3{
+  font-size:small;
 
-.linkButton {
-  background: none;
-  border: none;
-  color: #ffb700;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: color 0.2s;
 }
-
-.linkButton:hover {
-  color: #0056b3;
-}
-
-/* Adjust spacing for login form */
-.signupForm {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.signupWrapper{
-    justify-content: center;
 }

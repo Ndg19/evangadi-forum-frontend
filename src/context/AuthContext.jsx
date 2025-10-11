@@ -22,7 +22,12 @@ export const AuthProvider = ({ children }) => {
       }
       try {
         const res = await api.get("/user/checkUser");
-        setUser({ username: res.data.username, userid: res.data.userid });
+        // backend returns { user: { user_id, username, email } }
+        const payload = res.data?.user || res.data || {};
+        const username =
+          payload.username || payload.user_name || payload.name || "";
+        const userid = payload.user_id || payload.id || payload.userid || "";
+        setUser({ username, userid });
       } catch (err) {
         console.error("User check failed:", err);
         logout();

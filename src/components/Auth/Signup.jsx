@@ -1,21 +1,24 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Auth.module.css";
 import { signupUser } from "../../services/api";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     first_name: "",
     last_name: "",
     email: "",
-    password: "",
+    password: ""
   });
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
-    setError(""); // Clear error on change
+    setError("");
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -86,13 +89,31 @@ const Signup = () => {
             value={formData.email}
             onChange={handleChange}
           />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-          />
+
+          {/* Password field with toggle icon */}
+          <div style={{ position: "relative" }}>
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              style={{ width: "100%" }}
+            />
+            <FontAwesomeIcon
+              icon={showPassword ? faEyeSlash : faEye}
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: "absolute",
+                right: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                cursor: "pointer",
+                fontSize: "18px",
+                color: "#555"
+              }}
+            />
+          </div>
 
           {error && <p className={styles.error}>{error}</p>}
 

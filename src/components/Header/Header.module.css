@@ -19,7 +19,7 @@
 }
 
 .logoImg {
-  height: 40px;
+  height: 30px;
   width: auto;
 }
 
@@ -49,14 +49,13 @@
   cursor: pointer;
   font-weight: 600;
   transition: 0.3s;
+  text-decoration: none;
 }
 
 .authBtn:hover,
 .logoutBtn:hover {
   background-color: #0056b3;
 }
-
-
 
 /* Hamburger */
 .hamburger {

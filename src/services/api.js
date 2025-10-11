@@ -6,7 +6,6 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 const api = axios.create({
   baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
- 
 });
 
 // Attach JWT token
@@ -28,6 +27,10 @@ export const getAllQuestions = () => api.get("/question");
 export const getSingleQuestion = (question_id) =>
   api.get(`/question/${question_id}`);
 export const postQuestion = (data) => api.post("/question", data);
+
+export const updateQuestion = (question_id, data) => {
+  return api.put(`/question/edit/${question_id}`, data);
+};
 
 // ===== Answers =====
 export const getAnswers = (question_id) => api.get(`/answer/${question_id}`);
