@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import styles from "./questionpage.module.css";
+import styles from "./QuestionPage.module.css";
 import api from "../services/api";
 import { AuthContext } from "../context/AuthContext";
 import { FaArrowCircleRight } from "react-icons/fa";
