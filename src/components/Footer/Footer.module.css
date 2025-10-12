@@ -95,7 +95,7 @@
 @media (max-width: 600px) {
   .footerContent {
     flex-direction: column; /* Stack columns vertically */
-    gap: 30px;
+    gap: 10px;
   }
 
   .logoAndSocials {
