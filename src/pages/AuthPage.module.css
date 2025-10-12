@@ -93,6 +93,7 @@
   .aboutSide {
     border-left: none;
     border-top: 2px solid rgba(0, 0, 0, 0.05);
+    padding: 0;
   }
 }
 @media (max-width: 480px) {
